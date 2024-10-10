@@ -11,11 +11,15 @@ const {
 } = require('../controllers/moviesController'); 
 
 
-router.post('/', addMovie)
-router.get('/', getAllMovies)
-router.get('/:id', getMovie)
-router.patch('/:id', updateMovie)
-router.delete('/:id', deleteMovie)
+router.route('/')
+    .get(getAllMovies)
+    .post(addMovie)
+
+router.route('/:id')
+    .get(getMovie)
+    .patch(updateMovie)
+    .delete(deleteMovie)
+
 router.get('/all/stats', getMoviesStats)
 router.get('/genre/:genre/top/:limit', getLimitedMoviesByGenre)
 
