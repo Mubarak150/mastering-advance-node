@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+require("dotenv").config();
 const morgan = require('morgan');
 const homeRouter = require('./routes/home')
 const moviesRouter = require('./routes/movies')
@@ -23,6 +24,15 @@ app.use((req, res, next) => {
 
 app.use('/home', homeRouter); 
 app.use('/movies', moviesRouter); 
+
+
+// default roue: 
+app.all('*', (req, res) => {
+    res.status(404).json({
+        status: 'failed',
+        message: `the route ${process.env.ORIGIN}${req.originalUrl} does not exist on this server.`
+    })
+})
 
 
 module.exports = app; 
