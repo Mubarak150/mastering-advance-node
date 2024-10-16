@@ -23,4 +23,6 @@ router.route('/:id')
 router.get('/all/stats', getMoviesStats)
 router.get('/genre/:genre/top/:limit', getLimitedMoviesByGenre)
 
+
+
 module.exports = router; 
