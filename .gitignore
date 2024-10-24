@@ -21,6 +21,7 @@ coverage
 # Dependency directories
 node_modules/
 jspm_packages/
+uploads/
 
 # Environment variable files
 # .env

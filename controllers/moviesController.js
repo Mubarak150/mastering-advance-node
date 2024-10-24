@@ -24,7 +24,7 @@ const getMovie = asyncErrorHandler( async (req, res, next) => {
 
     if(!movie) {
        const err = new CustomError('movie with this ID not found!', 404)
-       return next(err)
+       return next(err) // return is must here. 
     } 
 
     res.status(201).json({
@@ -58,34 +58,36 @@ const getAllMovies = asyncErrorHandler( async (req, res) => {
 
 
 // 4. update an existing movie by id
-const updateMovie = asyncErrorHandler( async (req, res) => {
+const updateMovie = asyncErrorHandler( async (req, res, next) => {
     let movie = await Movie.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true});
 
     if(!movie) {
-        res.status(404).json({ status: false, message: `no movie available with the id ${req.params.id}` })
-    } else {
-            res.status(201).json({
-            status: true,
-            message: "update successful",
-            data: movie
-        })
-    }   
+        const err = new CustomError('movie with this ID not found!', 404)
+        return next(err) // return is must here. 
+    }  
+
+    res.status(201).json({
+    status: true,
+    message: "update successful",
+    data: movie
+    }) 
 })
 
 
 // 5. delete a movie by id
-const deleteMovie = asyncErrorHandler( async (req, res) => {
+const deleteMovie = asyncErrorHandler( async (req, res, next) => {
     let movie = await Movie.findByIdAndDelete(req.params.id);
 
     if(!movie) {
-        res.status(404).json({ status: false, message: `no movie available with the id ${req.params.id}` })
-    } else {
-            res.status(201).json({
-            status: true,
-            message: "delete successful",
-            data: movie
-        })
+        const err = new CustomError('movie with this ID not found!', 404)
+        return next(err) // return is must here. 
     }
+
+    res.status(201).json({
+    status: true,
+    message: "delete successful",
+    data: movie
+    })
 })
 
 

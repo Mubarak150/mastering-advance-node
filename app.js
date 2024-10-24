@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 require("dotenv").config();
 const morgan = require('morgan'); // it tells in short what happened to your request. hah
+const authRouter = require('./routes/auth'); 
 const homeRouter = require('./routes/home')
 const moviesRouter = require('./routes/movies')
 const CustomError = require('./Utils/CustomError');
@@ -17,6 +18,7 @@ app.use((req, res, next) => {
 })
 
 
+app.use('/api/auth', authRouter); 
 
 app.use('/home', homeRouter); 
 app.use('/movies', moviesRouter); 
