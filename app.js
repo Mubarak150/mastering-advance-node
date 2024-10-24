@@ -5,7 +5,7 @@ const morgan = require('morgan'); // it tells in short what happened to your req
 const authRouter = require('./routes/auth'); 
 const homeRouter = require('./routes/home')
 const moviesRouter = require('./routes/movies')
-const CustomError = require('./Utils/CustomError');
+const {CustomError} = require('./Utils/CustomError');
 const {globalErrorController} = require('./controllers/globalErrorController');  
 
 

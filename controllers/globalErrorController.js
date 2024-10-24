@@ -1,5 +1,5 @@
 require("dotenv").config();
-const CustomError = require('../Utils/CustomError'); 
+const {CustomError} = require('../Utils/CustomError'); 
 
 // handle errors in development
 const devError = (res, error) => {

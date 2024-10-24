@@ -10,4 +10,9 @@ class CustomError extends Error {
     }
 }
 
-module.exports = CustomError; 
+const makeError = (message, code, next) => {
+    const error = new CustomError(message, code); // bad req. 
+    return next(error); 
+}
+
+module.exports = {CustomError, makeError}; 
