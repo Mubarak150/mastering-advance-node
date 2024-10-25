@@ -1,5 +1,5 @@
 require("dotenv").config();
-const {CustomError} = require('../Utils/CustomError'); 
+const {CustomError, makeError} = require('../Utils/CustomError'); 
 
 // handle errors in development
 const devError = (res, error) => {
@@ -64,6 +64,15 @@ const validatorErrorHandler = err => {
     // }   
 }
 
+// video 108: 
+const jwtExpiredHandler = err => {
+    return new CustomError('your session has expired! please login again', 401) // unauthorized
+}
+
+const jwtErrorHandler = () => {
+    return new CustomError('your session credentials are not valid', 401) // unauthorized
+}
+
 // main function: 
 const globalErrorController = (error, req, res, next) => {
     error.statusCode = error.statusCode || 500; 
@@ -76,6 +85,9 @@ const globalErrorController = (error, req, res, next) => {
         if(error.name == 'CastError')  error = castErrorHandler(error) // ObjectId() casting error 
         if(error.code == 11000)  error = duplicateNameHandler(error) // handling mongoose client error for duplicate entry in unique column
         if(error.name == 'ValidationError')  error = validatorErrorHandler(error) // mongoose validator error
+        if(error.name == 'TokenExpiredError')  error = jwtExpiredHandler(error)
+        if(error.name == 'JsonWebTokenError')  error = jwtErrorHandler(error)
+
         prodError(res, error);
     }
 }

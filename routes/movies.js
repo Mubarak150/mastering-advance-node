@@ -1,5 +1,6 @@
 const express = require('express'); 
-const router = express.Router(); 
+const router = express.Router();
+const {protect} = require('../middleware/auth'); 
 const {
     addMovie,
     getMovie,
@@ -12,7 +13,7 @@ const {
 
 
 router.route('/')
-    .get(getAllMovies)
+    .get(protect, getAllMovies)
     .post(addMovie)
 
 router.route('/:id')
