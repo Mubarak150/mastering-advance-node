@@ -2,8 +2,10 @@ const asyncErrorHandler = require('../Utils/asyncErrorHandler');
 const util = require('util'); 
 const jwt = require('jsonwebtoken'); 
 const {makeError} = require('../Utils/CustomError'); 
+const User = require('../models/User'); 
 
 const protect = asyncErrorHandler( async (req, res, next) => {
+
     // 1. read the token && check if the token exists:
     const testToken = req.headers.authorization;
     
@@ -17,10 +19,12 @@ const protect = asyncErrorHandler( async (req, res, next) => {
     if(!decodedToken) return makeError('token is expired and is not valid', 401, next); 
 
     // 3. if the user exists: 
+    const user_id = decodedToken.id; 
+    
+    const user = await User.findOne({_id: user_id});
+    if(!user) return makeError('the user with this token does not exists anymore.', 401, next); 
 
-    // 4. is his/her password the same as at the time of token generation: 
-
-    // 5. letting him access the route handler: 
+    // 4. letting him access the route handler: 
     next(); 
 })
 
