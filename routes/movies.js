@@ -1,6 +1,6 @@
 const express = require('express'); 
 const router = express.Router();
-const {protect} = require('../middleware/auth'); 
+const {protect, restrict, allow} = require('../middleware/auth'); 
 const {
     addMovie,
     getMovie,
@@ -13,7 +13,7 @@ const {
 
 
 router.route('/')
-    .get(protect, getAllMovies)
+    .get(protect, allow('admin'), getAllMovies) // allow middleware works for multiple too i.e. allow('admin', 'doctor') etc
     .post(addMovie)
 
 router.route('/:id')

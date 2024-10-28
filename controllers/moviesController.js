@@ -45,7 +45,7 @@ const getAllMovies = asyncErrorHandler( async (req, res) => {
     let movies = await features.query; 
     // let pagesCount = moviesCount%limit !== 0 ? Math.trunc(moviesCount/limit) + 1 : moviesCount/limit; 
     
-    res.status(201).json({
+    res.status(200).json({
         status: true,
         count: movies.length,
         // pages: pagesCount,

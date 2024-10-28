@@ -24,9 +24,21 @@ const protect = asyncErrorHandler( async (req, res, next) => {
     const user = await User.findOne({_id: user_id});
     if(!user) return makeError('the user with this token does not exists anymore.', 401, next); 
 
-    // 4. letting him access the route handler: 
+    // 4. letting him access the route handler:
+    req.user = user; 
     next(); 
 })
 
+const allow = (...role) => {
+    return (req, res, next) => !role.includes(req.user.role)  ? makeError(`${req.user.role}s are not allowed to access this route.`, 403, next) : next(); 
+}
 
-module.exports = { protect }
+// const allow = (roles = []) => {
+//     return (req, res, next) => {
+//         const hasAccess = roles.some(role => (req.user.role == role))
+//         return hasAccess ? next() : makeError(`${req.user.role}s are not allowed to access this route.`, 403, next)
+//     }
+// }
+
+
+module.exports = { protect, allow }

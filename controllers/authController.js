@@ -44,4 +44,30 @@ const login = asyncErrorHandler( async (req, res, next) => {
     })
 })
 
-module.exports = { signup, login }
+const updatePassword = asyncErrorHandler( async (req, res, next) => {
+
+    const {currentPassword, newPassword, confirmNewPassword} = req.body; 
+    // get the user data from the db
+    const user = await User.findById(req.user._id).select('+password')
+    if (!user) return makeError('No user found with this email', 404, next);
+
+    // check if the entered password is correct
+    const isMatch = await bcrypt.compare(currentPassword, user.password); 
+    if(!isMatch) return makeError('Password is incorrect', 400, next);
+
+    // if yes, then change his password  
+    user.password = newPassword; 
+    user.confirmPassword = confirmNewPassword; 
+    user.save(); 
+
+    // ... and log him in.
+    const token = generateToken(user); 
+    res.status(200).json({
+        status: true, 
+        token, 
+        id: user._id
+    })
+
+})
+
+module.exports = { signup, login, updatePassword }
